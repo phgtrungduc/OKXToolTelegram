@@ -1,3 +1,4 @@
+require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
@@ -200,8 +201,7 @@ class OKX {
     }
 
     async main() {
-        const dataFile = path.join(__dirname, 'id.txt');
-        const userData = fs.readFileSync(dataFile, 'utf8')
+        const userData = process.env.QUERY_ID
             .replace(/\r/g, '')
             .split('\n')
             .filter(Boolean);
