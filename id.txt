@@ -1,0 +1,1 @@
+query_id=AAGymGx5AgAAALKYbHl4Mcw7&user=%7B%22id%22%3A6332127410%2C%22first_name%22%3A%22Night%22%2C%22last_name%22%3A%22Fury%22%2C%22username%22%3A%22phuongtrungduc%22%2C%22language_code%22%3A%22en%22%2C%22allows_write_to_pm%22%3Atrue%7D&auth_date=1724669815&hash=06c209b8cd8cc107214a4f5b09fcd23dbc2a96f079810144d582da7bd6b90c06
