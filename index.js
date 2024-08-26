@@ -4,6 +4,11 @@ const path = require('path');
 const axios = require('axios');
 const colors = require('colors');
 const readline = require('readline');
+const port = process.env.PORT || 4000;
+
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+})
 
 class OKX {
     headers() {
