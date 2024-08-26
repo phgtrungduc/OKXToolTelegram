@@ -13,7 +13,7 @@ class OKX {
             "App-Type": "web",
             "Content-Type": "application/json",
             "Origin": "https://www.okx.com",
-            "Referer": "https://www.okx.com/mini-app/racer?tgWebAppStartParam=linkCode_85298986",
+            "Referer": "https://www.okx.com/mini-app/racer",
             "Sec-Ch-Ua": '"Not/A)Brand";v="8", "Chromium";v="126", "Microsoft Edge";v="126"',
             "Sec-Ch-Ua-Mobile": "?0",
             "Sec-Ch-Ua-Platform": '"Windows"',
@@ -34,8 +34,7 @@ class OKX {
         const payload = {
             "extUserId": extUserId,
             "extUserName": extUserName,
-            "gameId": 1,
-            "linkCode": "85298986"
+            "gameId": 1
         };
 
         return axios.post(url, payload, { headers });
