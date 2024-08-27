@@ -1,16 +1,8 @@
 require('dotenv').config();
-const express = require('express')
-const app = express()
 const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
-const colors = require('colors');
 const readline = require('readline');
-const port = process.env.PORT || 4000;
-
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
 
 class OKX {
     headers() {
@@ -195,6 +187,20 @@ class OKX {
         }
     }
 
+    async getCurrentPrice() {
+        const url = 'https://www.okx.com/api/v5/market/ticker?instId=BTC-USDT';
+        try {
+            const response = await axios.get(url);
+            if (response.data.code === '0' && response.data.data && response.data.data.length > 0) {
+                return parseFloat(response.data.data[0].last);
+            } else {
+                throw new Error('Lỗi khi lấy giá hiện tại');
+            }
+        } catch (error) {
+            throw new Error(`Lỗi lấy giá hiện tại: ${error.message}`);
+        }
+    }
+    
     askQuestion(query) {
         const rl = readline.createInterface({
             input: process.stdin,
@@ -208,21 +214,19 @@ class OKX {
     }
 
     async main() {
-        const userData = process.env.QUERY_ID
-            .replace(/\r/g, '')
-            .split('\n')
-            .filter(Boolean);
+        const userData = process.env.QUERY_ID;
     
         const hoinangcap = false;
         const hoiturbo = false;
-
+    
         while (true) {
             for (let i = 0; i < userData.length; i++) {
                 const queryId = userData[i];
                 const { extUserId, extUserName } = this.extractUserData(queryId);
                 try {
-                    // await this.checkDailyRewards(extUserId, queryId);
-
+                    console.log(`========== Tài khoản ${i + 1} | ${extUserName} ==========`.blue);
+                    await this.checkDailyRewards(extUserId, queryId);
+    
                     let boosts = await this.getBoosts(queryId);
                     boosts.forEach(boost => {
                         this.log(`${boost.context.name.green}: ${boost.curStage}/${boost.totalStage}`);
@@ -235,7 +239,7 @@ class OKX {
                         const balancePoints = balanceResponse.data.data.balancePoints;
                         if (fuelTank.curStage < fuelTank.totalStage && balancePoints > fuelTank.pointCost) {
                             await this.upgradeFuelTank(queryId);
-                            
+    
                             boosts = await this.getBoosts(queryId);
                             const updatedFuelTank = boosts.find(boost => boost.id === 2);
                             const updatebalanceResponse = await this.postToOKXAPI(extUserId, extUserName, queryId);
@@ -253,7 +257,7 @@ class OKX {
                         const balancePoints = balanceResponse.data.data.balancePoints;
                         if (turbo.curStage < turbo.totalStage && balancePoints > turbo.pointCost) {
                             await this.upgradeTurbo(queryId);
-                            
+    
                             boosts = await this.getBoosts(queryId);
                             const updatedTurbo = boosts.find(boost => boost.id === 3);
                             const updatebalanceResponse = await this.postToOKXAPI(extUserId, extUserName, queryId);
@@ -266,28 +270,38 @@ class OKX {
                             this.log('Không đủ điều kiện nâng cấp Turbo Charger!'.red);
                         }
                     }
-                    let predict = 1;
-                    for (let j = 0; j < 50; j++) {
+                    
+                    while (true) {
+                        const price1 = await this.getCurrentPrice();
+                        await this.sleep(4000);
+                        const price2 = await this.getCurrentPrice();
+    
+                        let predict;
+                        let action;
+                        if (price1 > price2) {
+                            predict = 0; // Sell
+                            action = 'Bán';
+                        } else {
+                            predict = 1; // Buy
+                            action = 'Mua';
+                        }
                         const response = await this.postToOKXAPI(extUserId, extUserName, queryId);
                         const balancePoints = response.data.data.balancePoints;
                         this.log(`${'Balance Points:'.green} ${balancePoints}`);
+    
                         const assessResponse = await this.assessPrediction(extUserId, predict, queryId);
                         const assessData = assessResponse.data.data;
                         const result = assessData.won ? 'Win'.green : 'Thua'.red;
-                        predict = assessData.won ? predict : (predict == 1 ? 0 : 1);
                         const calculatedValue = assessData.basePoint * assessData.multiplier;
-                        this.log(`Kết quả: ${result} x ${assessData.multiplier}! Balance: ${assessData.balancePoints}, Nhận được: ${calculatedValue}, Giá cũ: ${assessData.prevPrice}, Giá hiện tại: ${assessData.currentPrice}`.magenta);
+                        this.log(`Dự Đoán ${action} | Kết quả: ${result} x ${assessData.multiplier}! Balance: ${assessData.balancePoints}, Nhận được: ${calculatedValue}, Giá cũ: ${assessData.prevPrice}, Giá hiện tại: ${assessData.currentPrice}`.magenta);
     
-                        if (assessData.numChance <= 0 && reloadFuelTank && reloadFuelTank.curStage < reloadFuelTank.totalStage) {
+                        if (assessData.numChance > 0) {
+                            await this.Countdown(1);
+                        } else if (assessData.numChance <= 0 && reloadFuelTank && reloadFuelTank.curStage < reloadFuelTank.totalStage) {
                             await this.useBoost(queryId);
     
                             boosts = await this.getBoosts(queryId);
                             reloadFuelTank = boosts.find(boost => boost.id === 1);
-                        } else if (assessData.numChance > 0) {
-                            await this.Countdown(5);
-                            continue;
-                        } else if (assessData.secondToRefresh > 0) {
-                            await this.Countdown(assessData.secondToRefresh + 5);
                         } else {
                             break;
                         }
@@ -296,9 +310,9 @@ class OKX {
                     this.log(`${'Lỗi rồi:'.red} ${error.message}`);
                 }
             }
-            await this.waitWithCountdown(10);
+            await this.waitWithCountdown(600);
         }
-    }    
+    } 
 }
 
 if (require.main === module) {
