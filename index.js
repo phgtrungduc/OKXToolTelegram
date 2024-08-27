@@ -1,9 +1,16 @@
 require('dotenv').config();
+const express = require('express')
+const app = express()
+const port = process.env.PORT || 4000;
 const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
 const readline = require('readline');
 const colors = require('colors');
+
+app.get('/ping', (req, res) => {
+    res.send('pong!')
+  })
 
 class OKX {
     headers() {
