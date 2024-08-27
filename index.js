@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
 const readline = require('readline');
+const colors = require('colors');
 
 class OKX {
     headers() {
@@ -214,8 +215,10 @@ class OKX {
     }
 
     async main() {
-        const userData = process.env.QUERY_ID;
-    
+        const userData = process.env.QUERY_ID
+            .replace(/\r/g, '')
+            .split('\n')
+            .filter(Boolean);
         const hoinangcap = false;
         const hoiturbo = false;
     
