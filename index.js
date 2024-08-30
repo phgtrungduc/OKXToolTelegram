@@ -37,7 +37,7 @@ class OKX {
             'x-id-group': '2140848929270000004-c-9',
             'x-locale': 'en_US',
             'x-site-info': '==QfxojI5RXa05WZiwiIMFkQPx0Rfh1SPJiOiUGZvNmIsIiTWJiOi42bpdWZyJye',
-            'x-telegram-init-data': 'query_id=AAGymGx5AgAAALKYbHl-JXny&user=%7B%22id%22%3A6332127410%2C%22first_name%22%3A%22Night%22%2C%22last_name%22%3A%22Fury%22%2C%22username%22%3A%22phuongtrungduc%22%2C%22language_code%22%3A%22en%22%2C%22allows_write_to_pm%22%3Atrue%7D&auth_date=1724891843&hash=a4e9bbb01b05fd119e91b9533f840b1ed3795d1df973162e4e42cf6844585cf9',
+            'x-telegram-init-data': 'query_id=AAGymGx5AgAAALKYbHnk0S7P&user=%7B%22id%22%3A6332127410%2C%22first_name%22%3A%22Night%22%2C%22last_name%22%3A%22Fury%22%2C%22username%22%3A%22phuongtrungduc%22%2C%22language_code%22%3A%22en%22%2C%22allows_write_to_pm%22%3Atrue%7D&auth_date=1724979254&hash=30eb23aee7abba78c1ce32a1b89b7f407acd8e97c353b9be4d304251d8019829',
             'x-utc': '7',
             'x-zkdex-env': '0'
           };
