@@ -37,7 +37,7 @@ class OKX {
             'x-id-group': '2140848929270000004-c-9',
             'x-locale': 'en_US',
             'x-site-info': '==QfxojI5RXa05WZiwiIMFkQPx0Rfh1SPJiOiUGZvNmIsIiTWJiOi42bpdWZyJye',
-            'x-telegram-init-data': 'query_id=AAGymGx5AgAAALKYbHkU2mNJ&user=%7B%22id%22%3A6332127410%2C%22first_name%22%3A%22Night%22%2C%22last_name%22%3A%22Fury%22%2C%22username%22%3A%22phuongtrungduc%22%2C%22language_code%22%3A%22en%22%2C%22allows_write_to_pm%22%3Atrue%7D&auth_date=1725071973&hash=de8f6448badc610c20c96521d51e873fbbf34c2aa786a07fa0988d7a49f6e2e6',
+            'x-telegram-init-data': process.env.QUERY_ID,
             'x-utc': '7',
             'x-zkdex-env': '0'
           };
