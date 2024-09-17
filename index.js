@@ -9,6 +9,7 @@ const readline = require('readline');
 const colors = require('colors');
 
 app.get('/ping', (req, res) => {
+    console.log('PTDUC')
     res.send('pong!')
 });
 
