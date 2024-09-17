@@ -333,10 +333,16 @@ class OKX {
     } 
 }
 
-if (require.main === module) {
-    const okx = new OKX();
-    okx.main().catch(err => {
-        console.error(err.toString().red);
-        process.exit(1);
-    });
-}
+// if (require.main === module) {
+//     const okx = new OKX();
+//     okx.main().catch(err => {
+//         console.error(err.toString().red);
+//         process.exit(1);
+//     });
+// }
+
+const okx = new OKX();
+okx.main().catch(err => {
+    console.error(err.toString().red);
+    process.exit(1);
+});
